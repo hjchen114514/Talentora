@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { DemoScoutMock } from "@/lib/mock-data";
@@ -25,10 +26,14 @@ export function DemoScoutPopup({ mock, children }: DemoScoutPopupProps) {
         <div className="space-y-4">
           {/* Header */}
           <div className="flex items-start gap-3">
-            <div
-              className={`flex h-12 w-12 items-center justify-center rounded-full ${mock.color} text-white text-lg font-bold`}
-            >
-              {mock.aiAvatar}
+            <div className="relative h-12 w-12 flex-shrink-0">
+              <Image
+                src={mock.imagePath}
+                alt={`${mock.aiName} avatar`}
+                width={48}
+                height={48}
+                className="rounded-full object-cover"
+              />
             </div>
             <div className="flex-1">
               <h3 className="font-semibold text-base">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -16,42 +16,93 @@ import {
 import { useRouter } from "next/navigation";
 
 interface LiveInterviewProps {
-  aiName: string;
-  aiAvatar: string;
-  aiColor?: string;
+  companyName: string;
+  jobTitle: string;
   interviewType: string;
 }
 
 export function LiveInterview({
-  aiName,
-  aiAvatar,
-  aiColor = "bg-purple-500",
+  companyName,
+  jobTitle,
   interviewType,
 }: LiveInterviewProps) {
   const router = useRouter();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
   const [micEnabled, setMicEnabled] = useState(true);
   const [cameraEnabled, setCameraEnabled] = useState(true);
   const [chatOpen, setChatOpen] = useState(false);
 
+  useEffect(() => {
+    // Request camera and microphone permissions
+    const requestPermissions = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        });
+
+        streamRef.current = stream;
+
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      } catch (error) {
+        console.error("Error accessing media devices:", error);
+      }
+    };
+
+    requestPermissions();
+
+    // Cleanup function
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, []);
+
+  const toggleCamera = () => {
+    if (streamRef.current) {
+      const videoTrack = streamRef.current.getVideoTracks()[0];
+      if (videoTrack) {
+        videoTrack.enabled = !cameraEnabled;
+        setCameraEnabled(!cameraEnabled);
+      }
+    }
+  };
+
+  const toggleMic = () => {
+    if (streamRef.current) {
+      const audioTrack = streamRef.current.getAudioTracks()[0];
+      if (audioTrack) {
+        audioTrack.enabled = !micEnabled;
+        setMicEnabled(!micEnabled);
+      }
+    }
+  };
+
   const handleEndCall = () => {
     if (confirm("Are you sure you want to end the interview?")) {
+      // Stop all tracks before navigation
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
+      }
       router.push("/dashboard");
     }
   };
 
   return (
-    <div className="h-screen bg-gray-900 flex flex-col">
+    <div className="h-screen bg-[#F8F7FC] flex flex-col">
       {/* Header */}
-      <div className="bg-gray-800 px-6 py-3 flex items-center justify-between">
+      <div className="bg-white border-b px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div
-            className={`flex h-10 w-10 items-center justify-center rounded-full ${aiColor} text-white font-bold`}
-          >
-            {aiAvatar}
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-600 text-white">
+            <Bot className="h-5 w-5" />
           </div>
           <div>
-            <h2 className="text-white font-semibold">{aiName}</h2>
-            <p className="text-gray-400 text-sm capitalize">{interviewType}</p>
+            <h2 className="text-gray-900 font-semibold">{companyName} - {jobTitle}</h2>
+            <p className="text-gray-600 text-sm capitalize">{interviewType}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -61,46 +112,36 @@ export function LiveInterview({
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Left Side - AI and Transcript */}
-        <div className="flex-1 flex flex-col bg-gray-800 p-6">
-          {/* AI Avatar Section */}
-          <Card className="mb-4 bg-gray-700 border-gray-600">
-            <div className="p-6 flex items-center justify-center">
-              <div
-                className={`flex h-24 w-24 items-center justify-center rounded-full ${aiColor} text-white text-4xl font-bold`}
-              >
-                {aiAvatar}
-              </div>
-            </div>
-          </Card>
-
+      <div className="flex-1 flex overflow-hidden p-6 gap-6">
+        {/* Left Side - Transcript */}
+        <div className="flex-1 flex flex-col">
           {/* Transcript/Script Area */}
-          <Card className="flex-1 bg-gray-700 border-gray-600 overflow-hidden">
+          <Card className="flex-1 bg-white overflow-hidden">
             <div className="p-6 h-full overflow-y-auto">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Interview Transcript</h3>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <Bot className="h-5 w-5 text-purple-400 flex-shrink-0 mt-1" />
-                  <div>
-                    <p className="text-purple-400 text-sm font-medium mb-1">
-                      {aiName}
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-100 text-purple-600 flex-shrink-0">
+                    <Bot className="h-4 w-4" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-purple-600 text-sm font-medium mb-1">
+                      AI Interviewer
                     </p>
-                    <p className="text-gray-300 text-sm">
-                      Hello! Welcome to your interview. I'm {aiName}, and I'll be
-                      conducting this {interviewType} interview with you today. Let's
-                      get started. Can you tell me a bit about yourself?
+                    <p className="text-gray-700 text-sm">
+                      Hello! Welcome to your interview for {jobTitle} at {companyName}. I'll be conducting this {interviewType} interview with you today. Let's get started. Can you tell me a bit about yourself and why you're interested in this role?
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="h-5 w-5 bg-blue-500 rounded-full flex-shrink-0 mt-1 flex items-center justify-center text-white text-xs font-bold">
+                  <div className="h-8 w-8 bg-blue-500 rounded-full flex-shrink-0 flex items-center justify-center text-white text-xs font-bold">
                     You
                   </div>
-                  <div>
-                    <p className="text-blue-400 text-sm font-medium mb-1">You</p>
-                    <p className="text-gray-300 text-sm italic">
-                      [Your response will appear here...]
+                  <div className="flex-1">
+                    <p className="text-blue-600 text-sm font-medium mb-1">You</p>
+                    <p className="text-gray-500 text-sm italic">
+                      [Your response will appear here when you speak...]
                     </p>
                   </div>
                 </div>
@@ -109,34 +150,38 @@ export function LiveInterview({
           </Card>
         </div>
 
-        {/* Right Side - User Camera */}
-        <div className="w-1/3 bg-gray-900 p-6">
-          <Card className="h-full bg-gray-700 border-gray-600 flex items-center justify-center">
-            {cameraEnabled ? (
-              <div className="text-center">
-                <Camera className="h-16 w-16 text-gray-500 mx-auto mb-4" />
-                <p className="text-gray-400">Your Camera</p>
-                <p className="text-gray-500 text-sm mt-2">Camera placeholder</p>
-              </div>
-            ) : (
-              <div className="text-center">
-                <CameraOff className="h-16 w-16 text-gray-500 mx-auto mb-4" />
-                <p className="text-gray-400">Camera Off</p>
-              </div>
-            )}
+        {/* Right Side - User Camera (Square) */}
+        <div className="w-96">
+          <Card className="bg-white overflow-hidden">
+            <div className="aspect-square w-full flex items-center justify-center bg-gray-100 overflow-hidden">
+              {cameraEnabled ? (
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  playsInline
+                  muted
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="text-center">
+                  <CameraOff className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-600 font-medium">Camera Off</p>
+                </div>
+              )}
+            </div>
           </Card>
         </div>
       </div>
 
       {/* Control Belt */}
-      <div className="bg-gray-800 px-6 py-4">
+      <div className="bg-white border-t px-6 py-4">
         <div className="flex items-center justify-center gap-4">
           {/* Microphone Toggle */}
           <Button
             variant={micEnabled ? "default" : "destructive"}
             size="lg"
-            onClick={() => setMicEnabled(!micEnabled)}
-            className="rounded-full h-14 w-14 p-0"
+            onClick={toggleMic}
+            className="rounded-full h-14 w-14 p-0 bg-purple-600 hover:bg-purple-700"
           >
             {micEnabled ? (
               <Mic className="h-6 w-6" />
@@ -149,8 +194,8 @@ export function LiveInterview({
           <Button
             variant={cameraEnabled ? "default" : "destructive"}
             size="lg"
-            onClick={() => setCameraEnabled(!cameraEnabled)}
-            className="rounded-full h-14 w-14 p-0"
+            onClick={toggleCamera}
+            className="rounded-full h-14 w-14 p-0 bg-purple-600 hover:bg-purple-700"
           >
             {cameraEnabled ? (
               <Camera className="h-6 w-6" />

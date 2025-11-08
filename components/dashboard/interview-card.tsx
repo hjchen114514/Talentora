@@ -1,12 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DemoScoutPopup } from "@/components/demoscout/demoscout-popup";
+import { JobDetailsModal } from "./job-details-modal";
 import { Interview, formatInterviewType, getRecommendedMock, getStatusColor } from "@/lib/mock-data";
-import { Calendar, Clock, User, Info } from "lucide-react";
+import { Calendar, Info } from "lucide-react";
 
 interface InterviewCardProps {
   interview: Interview;
@@ -16,32 +18,43 @@ export function InterviewCard({ interview }: InterviewCardProps) {
   const router = useRouter();
   const recommendedMock = getRecommendedMock(interview.type);
   const statusVariant = getStatusColor(interview.status);
+  const [showJobDetails, setShowJobDetails] = useState(false);
 
   const handleStartInterview = () => {
     router.push(`/dashboard/interview/${interview.id}/ready`);
   };
 
   return (
-    <Card className="hover:shadow-md transition-shadow">
-      <CardContent className="pt-6">
-        {/* Title */}
-        <div className="mb-3">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            {interview.title}
-          </h3>
+    <>
+      <Card className="hover:shadow-md transition-shadow relative">
+        {/* Info Button - Top Right */}
+        <button
+          onClick={() => setShowJobDetails(true)}
+          className="absolute top-4 right-4 p-1.5 hover:bg-gray-100 rounded-full transition-colors"
+          aria-label="View job details"
+        >
+          <Info className="h-5 w-5 text-gray-600" />
+        </button>
 
-          {/* Company and Interviewer */}
-          <div className="space-y-1">
-            <p className="text-sm font-medium text-gray-700">
-              {interview.companyName} • {interview.interviewer}
-            </p>
+        <CardContent className="pt-6 pr-12">
+          {/* Title */}
+          <div className="mb-3">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              {interview.title}
+            </h3>
 
-            {/* Date and Time */}
-            <p className="text-sm text-gray-500">
-              {interview.date} • {interview.time}
-            </p>
+            {/* Company */}
+            <div className="space-y-1">
+              <p className="text-sm font-medium text-gray-700">
+                {interview.companyName}
+              </p>
+
+              {/* Date and Time */}
+              <p className="text-sm text-gray-500">
+                {interview.date} • {interview.time}
+              </p>
+            </div>
           </div>
-        </div>
 
         {/* Posted Date - smaller */}
         <div className="flex items-center gap-1.5 mb-4 text-xs text-gray-500">
@@ -84,5 +97,13 @@ export function InterviewCard({ interview }: InterviewCardProps) {
         </DemoScoutPopup>
       </CardFooter>
     </Card>
+
+    {/* Job Details Modal */}
+    <JobDetailsModal
+      interview={interview}
+      open={showJobDetails}
+      onOpenChange={setShowJobDetails}
+    />
+  </>
   );
 }

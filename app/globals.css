@@ -47,8 +47,13 @@
     @apply border-border;
   }
 
+  html {
+    background-color: #F8F7FC;
+  }
+
   body {
     @apply bg-background text-foreground;
+    background-color: #F8F7FC;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 

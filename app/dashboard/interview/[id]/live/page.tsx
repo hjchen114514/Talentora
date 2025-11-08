@@ -14,9 +14,8 @@ export default function InterviewLivePage() {
 
   return (
     <LiveInterview
-      aiName={interview.interviewer}
-      aiAvatar={interview.interviewer.charAt(0)}
-      aiColor="bg-blue-600"
+      companyName={interview.companyName}
+      jobTitle={interview.jobTitle}
       interviewType={formatInterviewType(interview.type)}
     />
   );

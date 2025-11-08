@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -37,10 +38,14 @@ export function MockCard({ mock }: MockCardProps) {
         <CardContent className="pt-6">
           {/* Avatar and Name */}
           <div className="flex items-center gap-3 mb-4">
-            <div
-              className={`flex h-14 w-14 items-center justify-center rounded-full ${mock.color} text-white text-xl font-bold`}
-            >
-              {mock.aiAvatar}
+            <div className="relative h-14 w-14 flex-shrink-0">
+              <Image
+                src={mock.imagePath}
+                alt={`${mock.aiName} avatar`}
+                width={56}
+                height={56}
+                className="rounded-full object-cover"
+              />
             </div>
             <div>
               <h3 className="font-semibold text-lg text-gray-900">
@@ -70,10 +75,14 @@ export function MockCard({ mock }: MockCardProps) {
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <div className="flex items-center gap-3 mb-2">
-              <div
-                className={`flex h-12 w-12 items-center justify-center rounded-full ${mock.color} text-white text-lg font-bold`}
-              >
-                {mock.aiAvatar}
+              <div className="relative h-12 w-12 flex-shrink-0">
+                <Image
+                  src={mock.imagePath}
+                  alt={`${mock.aiName} avatar`}
+                  width={48}
+                  height={48}
+                  className="rounded-full object-cover"
+                />
               </div>
               <div>
                 <DialogTitle className="text-xl">

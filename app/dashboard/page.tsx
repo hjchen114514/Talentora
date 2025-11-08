@@ -17,7 +17,7 @@ export default function DashboardPage() {
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   const pastInterviews = interviews
-    .filter((i) => i.status === "failed" || i.status === "completed")
+    .filter((i) => i.status === "failed" || i.status === "completed" || i.status === "pass")
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const displayedInterviews = showHistory ? pastInterviews : upcomingInterviews;
