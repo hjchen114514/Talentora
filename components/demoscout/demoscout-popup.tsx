@@ -22,7 +22,7 @@ export function DemoScoutPopup({ mock, children }: DemoScoutPopupProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
-      <PopoverContent className="w-80" align="start">
+      <PopoverContent className="w-80" side="right" align="start" sideOffset={8}>
         <div className="space-y-4">
           {/* Header */}
           <div className="flex items-start gap-3">

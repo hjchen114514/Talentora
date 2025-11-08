@@ -31,7 +31,7 @@ export default function DashboardPage() {
       </div>
 
       {/* DemoScout CTA */}
-      <div className="mb-8 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-6 border border-purple-100">
+      <div className="mb-8 bg-white rounded-lg p-6 border border-purple-100">
         <div className="flex items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-2">

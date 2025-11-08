@@ -14,10 +14,10 @@ export default function DemoScoutLivePage() {
 
   return (
     <LiveInterview
-      aiName={mock.aiName}
-      aiAvatar={mock.aiAvatar}
-      aiColor={mock.color}
+      companyName="DemoScout"
+      jobTitle={`${mock.aiName} - Mock Interview`}
       interviewType={formatInterviewType(mock.type)}
+      returnPath="/dashboard/demoscout"
     />
   );
 }

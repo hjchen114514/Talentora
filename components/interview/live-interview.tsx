@@ -8,7 +8,6 @@ import {
   CameraOff,
   Mic,
   MicOff,
-  MessageSquare,
   Settings,
   PhoneOff,
   Bot,
@@ -19,19 +18,20 @@ interface LiveInterviewProps {
   companyName: string;
   jobTitle: string;
   interviewType: string;
+  returnPath?: string;
 }
 
 export function LiveInterview({
   companyName,
   jobTitle,
   interviewType,
+  returnPath = "/dashboard",
 }: LiveInterviewProps) {
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const [micEnabled, setMicEnabled] = useState(true);
   const [cameraEnabled, setCameraEnabled] = useState(true);
-  const [chatOpen, setChatOpen] = useState(false);
 
   useEffect(() => {
     // Request camera and microphone permissions
@@ -88,7 +88,7 @@ export function LiveInterview({
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((track) => track.stop());
       }
-      router.push("/dashboard");
+      router.push(returnPath);
     }
   };
 
@@ -202,16 +202,6 @@ export function LiveInterview({
             ) : (
               <CameraOff className="h-6 w-6" />
             )}
-          </Button>
-
-          {/* Chat Toggle */}
-          <Button
-            variant={chatOpen ? "secondary" : "outline"}
-            size="lg"
-            onClick={() => setChatOpen(!chatOpen)}
-            className="rounded-full h-14 w-14 p-0"
-          >
-            <MessageSquare className="h-6 w-6" />
           </Button>
 
           {/* Settings */}

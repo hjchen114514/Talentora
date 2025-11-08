@@ -21,7 +21,7 @@ export default function DemoScoutPage() {
         </div>
 
         {/* Description */}
-        <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-6 border border-purple-100">
+        <div className="bg-white rounded-lg p-6 border border-purple-100">
           <p className="text-gray-700 mb-4">
             Master your interview skills with personalized AI coaches! DemoScout offers
             realistic practice sessions across multiple interview types, helping you
