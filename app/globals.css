@@ -51,6 +51,11 @@
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+
+  /* Fix yellow scroll corner */
+  ::-webkit-scrollbar-corner {
+    background-color: white;
+  }
 }
 
 /* Custom Talentora styles */

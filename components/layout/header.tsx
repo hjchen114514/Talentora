@@ -7,9 +7,10 @@ import { Button } from "@/components/ui/button";
 export function Header() {
   return (
     <header className="border-b bg-white">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Logo and Brand */}
-        <div className="flex items-center gap-2">
+      <div className="mx-auto flex h-16 items-center justify-between px-6 lg:px-12" style={{ maxWidth: '1600px' }}>
+        {/* Logo, Navigation - Left aligned group */}
+        <div className="flex items-center gap-8">
+          {/* Logo and Brand */}
           <div className="flex items-center gap-2">
             {/* Logo placeholder - triangle shape similar to screenshot */}
             <div className="relative h-8 w-8">
@@ -35,10 +36,9 @@ export function Header() {
               Talent<span className="text-[#EC4899]">ora</span>
             </span>
           </div>
-        </div>
 
-        {/* Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
+          {/* Navigation - closer to logo */}
+          <nav className="hidden md:flex items-center gap-6">
           <Link
             href="/dashboard"
             className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
@@ -103,8 +103,9 @@ export function Header() {
             </svg>
           </Link>
         </nav>
+        </div>
 
-        {/* User Profile */}
+        {/* User Profile - pushed to right */}
         <div className="flex items-center gap-2">
           <User className="h-4 w-4 text-gray-600" />
           <span className="text-sm font-medium text-gray-700">
