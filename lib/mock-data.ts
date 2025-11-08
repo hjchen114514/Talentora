@@ -1,5 +1,5 @@
 export type InterviewStatus = "upcoming" | "in-progress" | "failed" | "pass" | "completed";
-export type InterviewType = "technical" | "behavioral" | "case" | "consulting" | "product" | "system-design";
+export type InterviewType = "technical" | "behavioral" | "case" | "consulting" | "product" | "investment";
 
 export interface Interview {
   id: string;
@@ -260,11 +260,11 @@ export const demoScoutMocks: DemoScoutMock[] = [
     color: "bg-indigo-500",
   },
   {
-    id: "jamie",
-    type: "system-design",
+    id: "michael",
+    type: "investment",
     aiName: "Jamie",
     aiAvatar: "J",
-    imagePath: "/bots/jamie.png",
+    imagePath: "/bots/michael.png",
     estimatedTime: "45-60 minutes",
     learningPoints: [
       "Design scalable distributed systems",
@@ -276,11 +276,11 @@ export const demoScoutMocks: DemoScoutMock[] = [
     color: "bg-green-500",
   },
   {
-    id: "sarah",
+    id: "matt",
     type: "product",
-    aiName: "Sarah",
+    aiName: "Senpai He Ma Xiu",
     aiAvatar: "S",
-    imagePath: "/bots/sarah.png",
+    imagePath: "/bots/matt.png",
     estimatedTime: "30-40 minutes",
     learningPoints: [
       "Ship products users love",
@@ -300,7 +300,7 @@ export function getRecommendedMock(interviewType: InterviewType): DemoScoutMock 
     case: "audi",
     behavioral: "ruby",
     consulting: "hongjin",
-    "system-design": "jamie",
+    "investment": "michael",
     product: "sarah",
   };
 
@@ -315,7 +315,7 @@ export function formatInterviewType(type: InterviewType): string {
     behavioral: "Behavioral",
     case: "Case",
     consulting: "Consulting",
-    "system-design": "System Design",
+    "investment": "Investment",
     product: "Product",
   };
   return typeMap[type] || type;
