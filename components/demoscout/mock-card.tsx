@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -88,9 +87,9 @@ export function MockCard({ mock }: MockCardProps) {
                 <DialogTitle className="text-xl">
                   {mock.aiName} - DemoScout
                 </DialogTitle>
-                <DialogDescription className="capitalize">
+                <p className="text-sm text-gray-600 capitalize mt-1">
                   {formatInterviewType(mock.type)} Interview Practice
-                </DialogDescription>
+                </p>
               </div>
             </div>
           </DialogHeader>

@@ -262,7 +262,7 @@ export const demoScoutMocks: DemoScoutMock[] = [
   {
     id: "michael",
     type: "investment",
-    aiName: "Jamie",
+    aiName: "JP Michael",
     aiAvatar: "J",
     imagePath: "/bots/michael.png",
     estimatedTime: "45-60 minutes",
@@ -272,7 +272,7 @@ export const demoScoutMocks: DemoScoutMock[] = [
       "Master system design fundamentals",
     ],
     funDescription:
-      "Jamie breaks down complex systems into digestible concepts!",
+      "Michael will teach you how to become JP Michael",
     color: "bg-green-500",
   },
   {
@@ -288,7 +288,7 @@ export const demoScoutMocks: DemoScoutMock[] = [
       "Conduct effective user research",
     ],
     funDescription:
-      "Sarah brings startup energy to product interview prep!",
+      "Senpai brings startup energy to product interview prep!",
     color: "bg-orange-500",
   },
 ];
